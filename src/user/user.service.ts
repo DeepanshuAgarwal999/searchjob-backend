@@ -10,7 +10,9 @@ export class UserService {
     private userModel: mongoose.Model<User>,
   ) {}
 
-  async create(userData: User):Promise<{ message: string; user?: UserDocument; }> {
+  async create(
+    userData: User,
+  ): Promise<{ message: string; user?: UserDocument }> {
     const findUser = await this.userModel
       .findOne({ email: userData.email })
       .exec();
@@ -27,6 +29,37 @@ export class UserService {
     };
   }
 
+  async addUserInfo(userInfo: Partial<User>) {
+    const findUser = await this.userModel
+      .findOne({ _id: userInfo.email })
+      .exec();
+    if (!findUser) {
+      throw new HttpException(
+        { message: 'No use found' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const updateUser = await this.userModel.findByIdAndUpdate(
+      {
+        _id: findUser._id,
+      },
+      {
+        $set: {
+          firstName: userInfo.first_name,
+          secondName: userInfo.last_name,
+          email: userInfo.email,
+          cityState: userInfo.cityState,
+        },
+      },
+      { new: true },
+    );
+    if (updateUser) {
+      return {
+        message: 'contact information saved',
+      };
+    }
+  }
   async findById(id: string): Promise<UserDocument | null> {
     return this.userModel.findById(id).exec();
   }

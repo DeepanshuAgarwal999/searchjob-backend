@@ -29,7 +29,6 @@ export class User {
   @IsEmail()
   email: string;
 
-  
   @Prop({
     default: null,
   })
@@ -55,6 +54,18 @@ export class User {
   @IsOptional()
   @IsString()
   oauth_id: string;
+
+  @IsOptional()
+  @IsString()
+  first_name: string;
+
+  @IsOptional()
+  @IsString()
+  last_name: string;
+
+  @IsOptional()
+  @IsString()
+  cityState: string;
 }
 
 export type UserDocument = User & Document;

@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { LoggerMiddleware } from './middleware/logging.middleware';
+import { CompanyModule } from './company/company.module';
+import { ApplicationsModule } from './applications/applications.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { LoggerMiddleware } from './middleware/logging.middleware';
     AuthModule,
     UserModule,
     MongooseModule.forRoot(process.env.DB_URL),
+    CompanyModule,
+    ApplicationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
